@@ -19,6 +19,27 @@ class ViewController: UIViewController, UITableViewDataSource {
         fetchPosts()
 
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let selectedIndexRow = tableView.indexPathForSelectedRow{
+            // I want to select the table view row
+            tableView.deselectRow(at: selectedIndexRow, animated: animated)
+            // make it unselect itself
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let selectedPath = tableView.indexPathForSelectedRow else { return }
+        let selectedPost = posts[selectedPath.row]
+        
+        if let target = segue.destination as? DetailViewController{
+            target.post = selectedPost
+        }
+        
+//        detailViewController.postDescriptionLabel.text = selectedPost.summary
+        
+        
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
